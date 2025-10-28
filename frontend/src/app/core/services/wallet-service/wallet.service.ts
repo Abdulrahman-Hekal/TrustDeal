@@ -29,6 +29,7 @@ export class WalletService {
 
   async connect() {
     await this.dAppConnector.init({ logger: 'error' });
-    await this.dAppConnector.openModal();
+    const a = await this.dAppConnector.openModal();
+    console.log(a);
   }
 }
