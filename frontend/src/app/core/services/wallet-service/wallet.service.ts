@@ -18,7 +18,7 @@ export class WalletService {
     url: globalThis.location.origin, // Must match your domain
     icons: [`${globalThis.location.origin}/${environment.appIcon}`],
   };
-  dAppConnector = new DAppConnector(
+  private readonly dAppConnector = new DAppConnector(
     this.metadata,
     LedgerId.TESTNET,
     environment.walletProjectId,
@@ -26,8 +26,8 @@ export class WalletService {
     [HederaSessionEvent.ChainChanged, HederaSessionEvent.AccountsChanged],
     [HederaChainId.Mainnet, HederaChainId.Testnet]
   );
-  accounts = signal<string[]>([]);
-  topic = signal('');
+  private readonly topic = signal('');
+  accountId = signal('');
   isConnected = signal(false);
 
   async connect() {
@@ -36,20 +36,17 @@ export class WalletService {
     if (modalResponse.acknowledged) {
       this.topic.set(modalResponse.topic);
       this.isConnected.set(true);
-      this.accounts.set(modalResponse.namespaces['hedera'].accounts);
+      const accounts = modalResponse.namespaces['hedera'].accounts;
+      this.accountId.set(accounts[0].split(':').at(-1) ?? '');
     }
-    console.log(this.topic());
-    console.log(this.isConnected());
   }
   async disconnect() {
     const isDisconnected = await this.dAppConnector.disconnect(this.topic());
     if (isDisconnected) {
       this.topic.set('');
       this.isConnected.set(false);
-      this.accounts.set([]);
+      this.accountId.set('');
     }
-    console.log(this.topic());
-    console.log(this.isConnected());
     return isDisconnected;
   }
 }
