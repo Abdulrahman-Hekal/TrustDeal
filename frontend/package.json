@@ -29,7 +29,7 @@
     "@angular/platform-browser": "^20.2.0",
     "@angular/router": "^20.2.0",
     "@hashgraph/hedera-wallet-connect": "^2.0.4-canary.3ca04e9.0",
-    "@hashgraph/sdk": "^2.75.0",
+    "@hashgraph/sdk": "^2.72.0",
     "@tailwindcss/postcss": "^4.1.16",
     "@walletconnect/modal": "^2.7.0",
     "postcss": "^8.5.6",
