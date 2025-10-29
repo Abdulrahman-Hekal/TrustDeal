@@ -1,1 +1,23 @@
-<p>header.component works!</p>
+<header>
+    <div>
+        <div>
+            <img src="" alt="">
+        </div>
+        <ul>
+            <li></li>
+
+            @if(isConnected() == true){
+                <div>
+                    <button>
+                        DisConnect
+                    </button>
+                    <span>{{accountId()}}</span>
+                </div>
+            }@else{
+                <button>
+                    Connect
+                </button>
+            }
+        </ul>
+    </div>
+</header>

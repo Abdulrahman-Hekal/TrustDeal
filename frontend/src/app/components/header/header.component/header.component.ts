@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { WalletService } from '../../../core/services/wallet-service/wallet.service';
 
 @Component({
-  selector: 'app-header.component',
+  selector: 'app-header-component',
   imports: [],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
