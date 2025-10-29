@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nodemon src/index.js",
     "compile": "node src/contracts/compile.js",
+    "deploy": "node src/contracts/deploy.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

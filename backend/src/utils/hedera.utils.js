@@ -1,5 +1,6 @@
 const { AccountId, PrivateKey, Client } = require("@hashgraph/sdk");
 const logger = require("./logger.utils");
+require("dotenv").config();
 
 async function main(cb) {
   let client;
@@ -9,12 +10,16 @@ async function main(cb) {
     const MY_PRIVATE_KEY = PrivateKey.fromStringECDSA(
       process.env.HEDERA_PRIVATE_KEY
     );
+
     // Pre-configured client for testnet
     client = Client.forTestnet();
+
     //Set the operator with the account ID and private key
     client.setOperator(MY_ACCOUNT_ID, MY_PRIVATE_KEY);
+
     // Start your code here
-    cb(client);
+    await cb(client);
+
   } catch (error) {
     logger.error(`Error in hedera utility: ${error.message}`);
   } finally {

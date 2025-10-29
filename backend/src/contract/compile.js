@@ -11,10 +11,7 @@ function findImports(importPath) {
   try {
     // Handle OpenZeppelin imports
     if (importPath.startsWith("@openzeppelin/")) {
-      const openZeppelinPath = path.resolve(
-        "node_modules",
-        importPath
-      );
+      const openZeppelinPath = path.resolve("node_modules", importPath);
       const content = fs.readFileSync(openZeppelinPath, "utf8");
       return { contents: content };
     }
@@ -43,7 +40,9 @@ const input = {
 };
 
 // Compile with resolver
-const output = JSON.parse(solc.compile(JSON.stringify(input), { import: findImports }));
+const output = JSON.parse(
+  solc.compile(JSON.stringify(input), { import: findImports })
+);
 
 if (output.errors) {
   for (const err of output.errors) {
@@ -57,6 +56,9 @@ const contractName = Object.keys(fileContracts)[0];
 const contract = fileContracts[contractName];
 
 // Write output JSON (for Hedera deployment)
-fs.writeFileSync(`${path.join(__dirname, contractName)}.json`, JSON.stringify(contract, null, 2));
+fs.writeFileSync(
+  `${path.join(__dirname, contractName)}.json`,
+  JSON.stringify(contract, null, 2)
+);
 
-console.log(`✅ Compiled successfully: ${contractName}`);
+console.log(`Compiled successfully: ${contractName}`);

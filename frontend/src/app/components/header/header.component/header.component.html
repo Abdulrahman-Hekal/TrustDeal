@@ -1,23 +1,19 @@
 <header>
+  <div>
     <div>
-        <div>
-            <img src="" alt="">
-        </div>
-        <ul>
-            <li></li>
-
-            @if(isConnected() == true){
-                <div>
-                    <button>
-                        DisConnect
-                    </button>
-                    <span>{{accountId()}}</span>
-                </div>
-            }@else{
-                <button>
-                    Connect
-                </button>
-            }
-        </ul>
+      <img src="" alt="" />
     </div>
+    <ul>
+      <li></li>
+
+      @if(isConnected() == true){
+      <div>
+        <button>DisConnect</button>
+        <span>{{ accountId() }}</span>
+      </div>
+      }@else{
+      <button (click)="connect()">Connect</button>
+      }
+    </ul>
+  </div>
 </header>
