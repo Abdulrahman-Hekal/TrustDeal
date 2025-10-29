@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import {
   DAppConnector,
   HederaChainId,
@@ -7,11 +7,13 @@ import {
 } from '@hashgraph/hedera-wallet-connect';
 import { LedgerId } from '@hashgraph/sdk';
 import { environment } from '../../../../environments/environment';
+import { ContractService } from '../contract-service/contract.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WalletService {
+  private readonly _contractService = inject(ContractService)
   private readonly metadata = {
     name: environment.appName,
     description: environment.appDesc,
@@ -38,6 +40,7 @@ export class WalletService {
       this.isConnected.set(true);
       const accounts = modalResponse.namespaces['hedera'].accounts;
       this.accountId.set(accounts[0].split(':').at(-1) ?? '');
+      this._contractService.initContract();
     }
   }
   async disconnect() {
