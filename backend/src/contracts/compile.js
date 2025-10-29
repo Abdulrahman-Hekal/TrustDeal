@@ -57,6 +57,6 @@ const contractName = Object.keys(fileContracts)[0];
 const contract = fileContracts[contractName];
 
 // Write output JSON (for Hedera deployment)
-fs.writeFileSync(`${contractName}.json`, JSON.stringify(contract, null, 2));
+fs.writeFileSync(`${path.join(__dirname, contractName)}.json`, JSON.stringify(contract, null, 2));
 
 console.log(`✅ Compiled successfully: ${contractName}`);
