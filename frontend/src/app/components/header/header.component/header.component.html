@@ -1,19 +1,78 @@
-<header>
-  <div>
-    <div>
-      <img src="" alt="" />
-    </div>
-    <ul>
-      <li></li>
+<header class="bg-[#1E293B] h-full py-3 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center px-4">
+        <!-- Logo -->
+        <div class="shrink-0">
+            <img src="./logo.png" alt="logo-trustDeal" class="w-[130px] h-auto transition-all duration-300 hover:scale-105">
+        </div>
 
-      @if(isConnected() == true){
-      <div>
-        <button>DisConnect</button>
-        <span>{{ accountId() }}</span>
-      </div>
-      }@else{
-      <button (click)="connect()">Connect</button>
-      }
-    </ul>
-  </div>
+        <!-- Desktop Navigation -->
+        <ul class="hidden lg:flex lg:flex-row lg:items-center lg:gap-6">
+            <li class="flex items-center gap-4">
+                @if(isConnected()) {
+                <div class="flex items-center gap-3 bg-background-light/10 px-4 py-2 rounded-lg backdrop-blur-sm">
+                    <span class="text-white font-medium text-sm bg-primary-blue/20 px-3 py-1 rounded-full">
+                        {{accountId()}}
+                    </span>
+                    <button (click)="disconnect()"
+                        class="cursor-pointer text-white text-base font-semibold px-4 py-2 bg-linear-to-r from-rose-600 to-red-400 rounded-lg transition-all duration-300 hover:shadow-lg active:scale-95">
+                        Disconnect
+                    </button>
+                </div>
+                } @else {
+                <button (click)="connect()"
+                    class="cursor-pointer text-white text-base font-semibold px-6 py-2 bg-linear-to-r from-blue-600 to-cyan-400 rounded-lg transition-all duration-300 active:scale-95">
+                    Connect Wallet
+                </button>
+                }
+            </li>
+        </ul>
+
+        <!-- Mobile Toggle Button -->
+        @if (!isToggle) {
+        <button class="lg:hidden text-background-light p-2 rounded-lg hover:bg-white/10 transition-colors duration-200"
+            (click)="openNav()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 cursor-pointer text-white" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+        } @else {
+        <!-- Mobile Navigation Menu -->
+        <div class="lg:hidden fixed top-0 left-0 w-full h-full bg-black/50 backdrop-blur-sm z-50" (click)="openNav()">
+            <div class="absolute top-0 right-0 w-80 h-full bg-secondary-gray shadow-2xl"
+                (click)="$event.stopPropagation()">
+                <div class="flex justify-between items-center p-6 border-b border-white/10">
+                    <img src="./logo.png" alt="logo-trustDeal" class="w-[120px]">
+                    <button (click)="openNav()" class="text-background-light p-2 rounded-lg hover:bg-white/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white cursor-pointer" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <ul class="flex flex-col items-center gap-6 py-8 px-6">
+                    @if(isConnected()) {
+                    <div class="flex flex-col items-center gap-4 w-full">
+                        <span
+                            class="text-background-light text-center font-medium bg-primary-blue/20 px-4 py-2 rounded-full w-full">
+                            {{accountId()}}
+                        </span>
+                        <button (click)="disconnect(); openNav()"
+                            class="cursor-pointer text-white text-base font-semibold px-6 py-3 bg-linear-to-r from-red-400 to-rose-600 rounded-lg w-full transition-all duration-300 hover:shadow-lg">
+                            Disconnect
+                        </button>
+                    </div>
+                    } @else {
+                    <button (click)="connect(); openNav()"
+                        class="cursor-pointer text-white text-base font-semibold px-6 py-3 bg-linear-to-r from-blue-600 to-cyan-400 rounded-lg w-full transition-all duration-300">
+                        Connect Wallet
+                    </button>
+                    }
+                </ul>
+            </div>
+        </div>
+        }
+    </div>
 </header>

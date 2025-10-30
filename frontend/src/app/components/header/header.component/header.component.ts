@@ -10,6 +10,7 @@ import { WalletService } from '../../../core/services/wallet-service/wallet.serv
 export class HeaderComponent implements OnInit {
   accountId = signal('');
   isConnected = signal(false);
+  isToggle : boolean = false
   private readonly _walletService = inject(WalletService);
 
   ngOnInit() {
@@ -22,5 +23,9 @@ export class HeaderComponent implements OnInit {
   }
   disconnect() {
     this._walletService.disconnect();
+  }
+
+  openNav(){
+    this.isToggle = !this.isToggle
   }
 }

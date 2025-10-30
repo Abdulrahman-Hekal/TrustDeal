@@ -33,14 +33,21 @@ export class WalletService {
   isConnected = signal(false);
 
   async connect() {
-    await this.dAppConnector.init({ logger: 'error' });
-    const modalResponse = await this.dAppConnector.openModal();
-    if (modalResponse.acknowledged) {
-      this.topic.set(modalResponse.topic);
-      this.isConnected.set(true);
-      const accounts = modalResponse.namespaces['hedera'].accounts;
-      this.accountId.set(accounts[0].split(':').at(-1) ?? '');
-      this._contractService.initContract();
+    try {
+      await this.dAppConnector.init({ logger: 'error' });
+      const modalResponse = await this.dAppConnector.openModal();
+      console.log(
+        'Modal response:', modalResponse,
+        
+      );
+      if (modalResponse.acknowledged) {
+        this.topic.set(modalResponse.topic);
+        this.isConnected.set(true);
+        const accounts = modalResponse.namespaces['hedera'].accounts;
+        this.accountId.set(accounts[0].split(':').at(-1) ?? '');
+      }
+    } catch (err) {
+      console.error('Wallet connect error:', err);
     }
   }
   async disconnect() {
