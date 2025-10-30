@@ -12,6 +12,7 @@ export class HeaderComponent implements OnInit {
   accountId = signal('');
   isConnected = signal(false);
   isToggle: boolean = false;
+
   private readonly _walletService = inject(WalletService);
 
   ngOnInit() {

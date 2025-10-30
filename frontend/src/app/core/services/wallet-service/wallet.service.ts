@@ -34,6 +34,11 @@ export class WalletService {
     try {
       await this.dAppConnector.init({ logger: 'error' });
       const modalResponse = await this.dAppConnector.openModal();
+
+      console.log(
+        'Modal response:', modalResponse,
+        
+      );
       if (modalResponse.acknowledged) {
         this.topic.set(modalResponse.topic);
         this.isConnected.set(true);

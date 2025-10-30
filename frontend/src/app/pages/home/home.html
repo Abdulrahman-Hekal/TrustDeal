@@ -20,17 +20,19 @@
             <div class="flex flex-col sm:flex-row gap-4 md:gap-6">
 
                 <!-- Projects Button -->
-                <button
-                    class="cursor-pointer px-8 py-4 bg-background-light/20 text-background-light text-lg font-semibold rounded-xl border-2 border-background-light/30 backdrop-blur-sm transition-all duration-300 hover:bg-background-light/30 hover:border-background-light/50 hover:scale-105 active:scale-95 transform">
-                    <span class="flex items-center justify-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                        </svg>
-                        View Projects
-                    </span>
-                </button>
+                <a routerLink="/jobs">
+                    <button
+                        class="cursor-pointer px-8 py-4 bg-background-light/20 text-background-light text-lg font-semibold rounded-xl border-2 border-background-light/30 backdrop-blur-sm transition-all duration-300 hover:bg-background-light/30 hover:border-background-light/50 hover:scale-105 active:scale-95 transform">
+                        <span class="flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                            View Projects
+                        </span>
+                    </button>
+                </a>
 
                 <app-form-projects />
             </div>
