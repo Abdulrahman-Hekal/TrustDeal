@@ -15,7 +15,7 @@ export class Jobs implements OnInit {
 
   ngOnInit(): void {
     this._jobService.getAllJobs().subscribe({
-      next:res => this.jobs = res.data,
+      next:res =>this.jobs = res.data,
       error:err => console.log(err)      
     })
   }
