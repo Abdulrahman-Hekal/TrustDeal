@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { JobService } from '../../core/services/job-service/job.service';
+import { IJobInput } from '../../core/models/job.model';
 
 @Component({
   selector: 'app-form-projects',
@@ -9,23 +11,32 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './form-projects.css',
 })
 export class FormProjects {
-  from = false;
+  constructor(private _jobServices: JobService){}
+  fromToggle = false
 
   projectForm: FormGroup = new FormGroup({
     title: new FormControl(''),
     description: new FormControl(''),
     price: new FormControl(''),
-    timeline: new FormControl('Select timeline'),
+    clientAddress: new FormControl(''),
   });
 
   closeForm() {
-    this.from = false;
+    this.fromToggle = false
+  }
+  
+  openForm(){
+    this.fromToggle = true
   }
 
-  // onSubmit() {
-  //   if (this.projectForm.valid) {
-  //     this.projectSubmitted.emit(this.projectForm.value);
-  //     this.closeForm();
-  //   }
-  // }
+  onSubmit() {
+    const projectForm = this.projectForm.value
+    this._jobServices.postNewJob(projectForm).subscribe({
+      next: () => {
+        alert('Category added successfully');
+        this.closeForm();
+      },
+      error: err => console.error(err)
+    })
+  }
 }

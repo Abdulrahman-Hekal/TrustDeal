@@ -8,13 +8,5 @@ import { FormProjects } from "../../components/form-projects/form-projects";
   styleUrl: './home.css',
 })
 export class Home {
-  showProjectForm = false;
 
-  openProjectForm() {
-    this.showProjectForm = true;
-  }
-
-  closeProjectForm() {
-    this.showProjectForm = false;
-  }
 }
