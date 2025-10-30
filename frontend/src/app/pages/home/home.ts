@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormProjects } from "../../components/form-projects/form-projects";
+import { FormProjects } from "../../components/form-projects/form-projects"
 import { RouterLink } from "@angular/router";
 
 @Component({
@@ -8,6 +8,4 @@ import { RouterLink } from "@angular/router";
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
-export class Home {
-
-}
+export class Home {}

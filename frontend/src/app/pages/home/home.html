@@ -1,51 +1,47 @@
-<section
-    class="relative bg-[url(/Gemini_Generated_Image_qs6iuuqs6iuuqs6i.png)] bg-cover bg-center bg-no-repeat w-full h-screen">
-    <!-- Overlay for better text readability -->
-    <div class="absolute inset-0 bg-linear-to-r from-secondary-gray/80 to-primary-blue/50"></div>
+<section class="relative bg-[url(/home-bg.png)] bg-cover bg-center bg-no-repeat w-full home-bg">
+  <!-- Overlay for better text readability -->
+  <div class="absolute inset-0 bg-linear-to-r from-secondary-gray/80 to-primary-blue/50"></div>
 
-    <!-- Content -->
-    <div class="relative z-10 w-full h-full flex items-center justify-center">
-        <div class="flex flex-col justify-center items-center text-center px-4">
-            <h3 class="text-2xl md:text-6xl lg:text-7xl font-bold text-background-light mb-6">
-                Work Together.
-                <span class="text-[#2563EB]">
-                    Trust Forever.
-                </span>
-            </h3>
+  <!-- Content -->
+  <div class="relative z-10 w-full h-full flex items-center justify-center">
+    <div class="flex flex-col justify-center items-center text-center px-4">
+      <h3 class="text-2xl md:text-6xl lg:text-7xl font-bold text-background-light mb-6">
+        Work Together.
+        <span class="text-[#2563EB]"> Trust Forever. </span>
+      </h3>
 
-            <p class="text-xl md:text-2xl text-background-light/90 mb-8 leading-relaxed">
-                Build, collaborate, and succeed with decentralized trust on TrustDeal
-            </p>
+      <p class="text-xl md:text-2xl text-background-light/90 mb-8 leading-relaxed">
+        Build, collaborate, and succeed with decentralized trust on TrustDeal
+      </p>
 
-            <div class="flex flex-col sm:flex-row gap-4 md:gap-6">
+      <div class="flex flex-col sm:flex-row gap-4 md:gap-6">
+        <app-form-projects />
 
-                <!-- Projects Button -->
-                <a routerLink="/jobs">
-                    <button
-                        class="cursor-pointer px-8 py-4 bg-background-light/20 text-background-light text-lg font-semibold rounded-xl border-2 border-background-light/30 backdrop-blur-sm transition-all duration-300 hover:bg-background-light/30 hover:border-background-light/50 hover:scale-105 active:scale-95 transform">
-                        <span class="flex items-center justify-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                            </svg>
-                            View Projects
-                        </span>
-                    </button>
-                </a>
 
-                <app-form-projects />
-            </div>
-        </div>
-    </div>
-
-    <!-- Scroll Indicator -->
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
-        <div class="animate-bounce">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-background-light" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        <!-- Projects Button -->
+        <button
+          class="cursor-pointer px-8 py-4 bg-background-light/20 text-background-light text-lg font-semibold rounded-xl border-2 border-background-light/30 backdrop-blur-sm transition-all duration-300 hover:bg-background-light/30 hover:border-background-light/50 hover:scale-105 active:scale-95 transform"
+          routerLink="/jobs"
+        >
+          <span class="flex items-center justify-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+              />
             </svg>
-        </div>
+            View Projects
+          </span>
+        </button>
+      </div>
     </div>
+  </div>
 </section>
