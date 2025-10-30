@@ -9,7 +9,11 @@
 
         <!-- Jobs Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-8">
+<<<<<<< Updated upstream
             @for (job of jobs; track $index) {
+=======
+            @for (job of jobs(); track $index) {
+>>>>>>> Stashed changes
             <div
                 class="bg-white rounded-xl shadow-lg border border-gray-200 p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 relative overflow-hidden">
                 <!-- linear Top Border -->
@@ -31,7 +35,11 @@
         </div>
 
         <!-- Empty State -->
+<<<<<<< Updated upstream
         @if (jobs.length === 0) {
+=======
+        @if (jobs().length === 0) {
+>>>>>>> Stashed changes
         <div class="text-center py-16">
             <div class="text-gray-400 mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24"
