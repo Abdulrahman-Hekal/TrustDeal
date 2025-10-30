@@ -1,1 +1,12 @@
-<p>jobs works!</p>
+<section class="pt-16">
+    <div class="container mx-auto">
+        <div>
+            @for (job of jobs; track $index) {
+                <h2>{{job.title}}</h2>
+                <h3>{{job.description}}</h3>
+                <span>{{job.price}} </span>
+            }
+
+        </div>
+    </div>
+</section>
