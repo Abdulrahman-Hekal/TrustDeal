@@ -16,7 +16,6 @@ export class FormProjects {
     title: new FormControl(''),
     description: new FormControl(''),
     price: new FormControl(''),
-    currency: new FormControl('USD ($)'),
     timeline: new FormControl('Select timeline'),
   });
 
