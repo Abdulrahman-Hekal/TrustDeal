@@ -18,11 +18,11 @@ const router = express.Router();
 router.get("/", getJobs);
 router.get("/user/:address", getJobsByUser);
 router.get("/:id", getJobById);
+router.get("/preview/:token", previewWork);
 
 router.post("/", createJob);
 router.post("/deliver/:id", upload.single("file"), deliver);
 router.post("/preview/:id", generatePreview);
-router.post("/preview/:token", previewWork);
 router.post("/approve/:id", approveWork);
 
 router.put("/:id", assignFreelancer);

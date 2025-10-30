@@ -25,6 +25,14 @@ export interface IJob {
   isExpired: boolean;
 }
 
+export interface Iipfs {
+  cid: string;
+  name: string;
+  size: number;
+  mime_type: string;
+  fileUrl: string;
+}
+
 export interface IJobsResponse {
   message: string;
   data: IJob[];
@@ -33,6 +41,16 @@ export interface IJobsResponse {
 export interface IJobResponse {
   message: string;
   data: IJob;
+}
+
+export interface IipfsResponse {
+  message: string;
+  data: Iipfs;
+}
+
+export interface IPreviewResponse {
+  previewUrl: string;
+  expiresIn: string;
 }
 
 export interface IJobInput {

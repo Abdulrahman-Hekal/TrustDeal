@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { ethers } from 'ethers';
 import contractJson from '../../contract/TrustDealEscrow.json';
 import { WalletService } from '../wallet-service/wallet.service';
+import { environment } from '../../../../environments/environment';
 
 export interface ProjectEvent {
   name: string;
@@ -20,7 +21,7 @@ export class ContractService {
   private signer!: ethers.Signer;
   private contract!: ethers.Contract;
 
-  private readonly contractAddress = '0x00000000000000000000000000000000006d358b';
+  private readonly contractAddress = environment.contractAddress;
   private readonly contractABI = contractJson.abi;
 
   events = signal<ProjectEvent[]>([]);

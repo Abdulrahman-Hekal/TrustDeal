@@ -7,4 +7,5 @@ export const environment = {
   apiUrl: 'http://localhost:3000/api/',
   staticUrl: 'http://localhost:3000/uploads/',
   ipfsGateway: 'amber-impressive-galliform-239.mypinata.cloud',
+  contractAddress: '0x00000000000000000000000000000000006d358b',
 };
