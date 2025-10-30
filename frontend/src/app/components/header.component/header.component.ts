@@ -1,9 +1,10 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { WalletService } from '../../core/services/wallet-service/wallet.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header-component',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })

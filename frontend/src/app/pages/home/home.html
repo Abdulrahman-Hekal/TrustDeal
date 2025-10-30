@@ -19,22 +19,6 @@
 
             <div class="flex flex-col sm:flex-row gap-4 md:gap-6">
 
-                <button
-                    class="cursor-pointer px-8 py-4 bg-linear-to-r from-blue-600 to-cyan-500 text-white text-lg font-semibold rounded-xl shadow-2xl transition-all duration-300 hover:shadow-3xl  hover:scale-105 active:scale-95 transform"
-                    (click)="openProjectForm()">
-                    <span class="flex items-center justify-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                        Add Project
-                    </span>
-                </button>
-
-                @if (showProjectForm == true) {
-                    <app-form-projects (formClosed)="closeProjectForm()" />
-                }
-
                 <!-- Projects Button -->
                 <button
                     class="cursor-pointer px-8 py-4 bg-background-light/20 text-background-light text-lg font-semibold rounded-xl border-2 border-background-light/30 backdrop-blur-sm transition-all duration-300 hover:bg-background-light/30 hover:border-background-light/50 hover:scale-105 active:scale-95 transform">
@@ -47,6 +31,8 @@
                         View Projects
                     </span>
                 </button>
+
+                <app-form-projects />
             </div>
         </div>
     </div>
