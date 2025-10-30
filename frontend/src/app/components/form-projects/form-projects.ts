@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { JobService } from '../../core/services/job-service/job.service';
+import { WalletService } from '../../core/services/wallet-service/wallet.service';
 
 @Component({
   selector: 'app-form-projects',
@@ -10,32 +11,41 @@ import { JobService } from '../../core/services/job-service/job.service';
   styleUrl: './form-projects.css',
 })
 export class FormProjects {
-  constructor(private _jobServices: JobService){}
-  fromToggle = false
+  private readonly _jobServices = inject(JobService);
+  private readonly _walletService = inject(WalletService);
+  fromToggle = signal(false);
 
   projectForm: FormGroup = new FormGroup({
     title: new FormControl(''),
     description: new FormControl(''),
     price: new FormControl(''),
-    clientAddress: new FormControl(''),
+    jobPeriod: new FormControl(''),
   });
 
-  closeForm() {
-    this.fromToggle = false
-  }
-  
-  openForm(){
-    this.fromToggle = true
-  }
-
   onSubmit() {
-    const projectForm = this.projectForm.value
+    const projectForm = this.projectForm.value;
+    projectForm.clientAddress = this._walletService.getAccountAddress();
     this._jobServices.postNewJob(projectForm).subscribe({
-      next: () => {
-        alert('Category added successfully');
+      next: (res) => {
+        alert(res.message);
         this.closeForm();
       },
-      error: err => console.error(err)
-    })
+      error: (res) => {
+        alert(res.error.message);
+        this.closeForm();
+      },
+    });
+  }
+
+  closeForm() {
+    this.fromToggle.set(false);
+  }
+
+  openForm() {
+    if (this._walletService.isConnected()) {
+      this.fromToggle.set(true);
+    } else {
+      alert('Please Connect your Wallet first.');
+    }
   }
 }

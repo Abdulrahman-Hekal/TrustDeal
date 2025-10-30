@@ -109,6 +109,7 @@ const jobSchema = new mongoose.Schema(
       get: decrypt,
     },
 
+    jobPeriod: { type: Number, required: true },
     deliveryDeadline: { type: Number, default: Date.now() + 30 * 24 * 60 * 60 },
     approvalDeadline: { type: Number, default: Date.now() + 37 * 24 * 60 * 60 },
 

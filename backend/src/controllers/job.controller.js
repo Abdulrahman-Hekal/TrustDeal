@@ -64,9 +64,9 @@ exports.getJobById = catchAsync(async (req, res) => {
 // CREATE NEW JOB
 // -------------------
 exports.createJob = catchAsync(async (req, res) => {
-  const { title, description, price, clientAddress } = req.body;
+  const { title, description, price, clientAddress, jobPeriod } = req.body;
 
-  if (!title || !description || !price || !clientAddress) {
+  if (!title || !description || !price || !clientAddress || !jobPeriod) {
     throw new AppError("Missing required fields", 400);
   }
 
@@ -75,6 +75,7 @@ exports.createJob = catchAsync(async (req, res) => {
     description,
     price,
     clientAddress,
+    jobPeriod,
   });
 
   res.status(201).json({

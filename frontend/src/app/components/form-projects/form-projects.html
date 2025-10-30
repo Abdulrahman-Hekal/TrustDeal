@@ -1,85 +1,137 @@
 <section class="">
-    <button
-        class="cursor-pointer px-8 py-4 bg-linear-to-r from-blue-600 to-cyan-500 text-white text-lg font-semibold rounded-xl shadow-2xl transition-all duration-300 hover:shadow-3xl  hover:scale-105 active:scale-95 transform" (click)="openForm()">
-        <span class="flex items-center justify-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-            </svg>
-            Add Project
-        </span>
-    </button>
+  <button
+    class="cursor-pointer px-8 py-4 bg-linear-to-r from-blue-600 to-cyan-500 text-white text-lg font-semibold rounded-xl shadow-2xl transition-all duration-300 hover:shadow-3xl hover:scale-105 active:scale-95 transform"
+    (click)="openForm()"
+  >
+    <span class="flex items-center justify-center gap-2">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="w-5 h-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+      Add Project
+    </span>
+  </button>
 
-    @if (fromToggle == true) {
-        <div class="container mx-auto max-w-4xl bg-white rounded-2xl p-6 fixed inset-0 backdrop-blur-sm z-50">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-secondary-gray mb-4">Add New Project</h2>
-                <p class="text-lg text-secondary-gray/70 max-w-2xl mx-auto">
-                    Create a new project and start collaborating with trusted partners
-                </p>
-            </div>
-    
-            <form class="shadow-xl md:p-8" [formGroup]="projectForm">
-                <!-- Project Title -->
-                <div class="mb-6">
-                    <label for="title" class="block text-sm font-semibold text-secondary-gray mb-2">
-                        Project Title
-                    </label>
-                    <input type="text" id="title" formControlName="title"
-                        placeholder="Enter project title (e.g., Website Development, Mobile App Design)"
-                        class="w-full px-4 py-3 border border-secondary-gray/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-300 bg-background-light/50">
-                </div>
-    
-                <!-- Job Description -->
-                <div class="mb-6">
-                    <label for="description" class="block text-sm font-semibold text-secondary-gray mb-2">
-                        Job Description
-                    </label>
-                    <textarea id="description" formControlName="description" rows="6"
-                        placeholder="Describe the project details, requirements, and expectations..."
-                        class="w-full px-4 py-3 border border-secondary-gray/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-300 bg-background-light/50 resize-none"></textarea>
-                    <div class="text-xs text-secondary-gray/50 mt-1">Be specific about deliverables and timeline</div>
-                </div>
-    
-                <!-- Price -->
-                <div class="mb-6">
-                    <label for="price" class="block text-sm font-semibold text-secondary-gray mb-2">
-                        Project Price ($)
-                    </label>
-                    <div class="relative">
-                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-gray/60">$</span>
-                        <input type="number" id="price" formControlName="price" min="0" step="0.01" placeholder="0.00"
-                            class="w-full pl-10 pr-4 py-3 border border-secondary-gray/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-300 bg-background-light/50">
-                    </div>
-                </div>
-    
-                <!-- Timeline -->
-                <div class="mb-6">
-                    <label for="clientAddress" class="block text-sm font-semibold text-secondary-gray mb-2">
-                        Expected Timeline
-                    </label>
-                    <input type="clientAddress" id="clientAddress" formControlName="clientAddress"
-                        placeholder="Enter project title (e.g., Website Development, Mobile App Design)"
-                        class="w-full px-4 py-3 border border-secondary-gray/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-300 bg-background-light/50">
-                </div>
-    
-                <!-- Form Actions -->
-                <div class="flex flex-col sm:flex-row gap-4 justify-end pt-6 border-t border-secondary-gray/10">
-                    <button type="button" (click)="closeForm()"
-                        class="px-6 py-3 bg-linear-to-r to-red-400 from-rose-600 text-secondary-gray rounded-lg font-semibold transition duration-500 cursor-pointer hover:to-red-500 hover:from-rose-700 hover:text-white">
-                        Cancel
-                    </button>
-                    <button type="submit"
-                        class="px-6 py-3 bg-linear-to-r from-blue-600 to-cyan-500 text-white rounded-lg font-semibold shadow-lg transition duration-500 hover:shadow-xl cursor-pointer transform hover:from-blue-700 hover:to-cyan-600">
-                        Create Project
-                    </button>
-                </div>
-            </form>
-    
-            <!-- Additional Info -->
-            <div class="mt-8 text-center text-secondary-gray/60 text-sm">
-                <p>Your project will be visible to trusted partners. All payments are secured through smart contracts.</p>
-            </div>
+  @if (fromToggle()) {
+  <div
+    class="container mx-auto max-w-4xl bg-white rounded-2xl p-6 fixed inset-0 backdrop-blur-sm z-50 h-fit"
+    style="top: 50%; transform: translateY(-50%)"
+  >
+    <div class="text-center mb-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-secondary-gray mb-4">Add New Project</h2>
+      <p class="text-lg text-secondary-gray/70 max-w-2xl mx-auto">
+        Create a new project and start collaborating with trusted partners
+      </p>
+    </div>
+
+    <form class="md:p-8" [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+      <!-- Project Title -->
+      <div class="mb-6">
+        <label for="title" class="block text-xl text-left font-semibold text-secondary-gray mb-2">
+          Project Title
+        </label>
+        <input
+          required
+          type="text"
+          id="title"
+          formControlName="title"
+          placeholder="Enter project title (e.g., Website Development, Mobile App Design)"
+          class="w-full px-4 py-3 border border-secondary-gray/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-300 bg-background-light/50"
+        />
+      </div>
+
+      <!-- Job Description -->
+      <div class="mb-6">
+        <label
+          for="description"
+          class="block text-xl text-left font-semibold text-secondary-gray mb-2"
+        >
+          Job Description
+        </label>
+        <textarea
+          required
+          id="description"
+          formControlName="description"
+          rows="6"
+          placeholder="Describe the project details, requirements, and expectations..."
+          class="w-full px-4 py-3 border border-secondary-gray/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-300 bg-background-light/50 resize-none"
+        ></textarea>
+        <div class="text-sm text-secondary-gray/50 mt-1">
+          Be specific about deliverables and timeline
         </div>
-    }
+      </div>
+
+      <!-- Price -->
+      <div class="mb-6">
+        <label for="price" class="block text-xl text-left font-semibold text-secondary-gray mb-2">
+          Project Price
+        </label>
+        <div class="relative">
+          <span
+            class="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-gray/60 text-xl"
+            >$</span
+          >
+          <input
+            required
+            type="number"
+            id="price"
+            formControlName="price"
+            min="0"
+            step="0.01"
+            placeholder="0.00"
+            class="w-full pl-8 pr-4 py-3 border border-secondary-gray/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-300 bg-background-light/50"
+          />
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="mb-6">
+        <label
+          for="projectPeriod"
+          class="block text-xl text-left font-semibold text-secondary-gray mb-2"
+        >
+          Project Period (days)
+        </label>
+        <input
+          required
+          type="number"
+          id="projectPeriod"
+          formControlName="jobPeriod"
+          placeholder="30"
+          class="w-full px-4 py-3 border border-secondary-gray/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-300 bg-background-light/50"
+        />
+      </div>
+
+      <!-- Form Actions -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-end pt-3">
+        <button
+          type="button"
+          (click)="closeForm()"
+          class="px-6 py-3 bg-linear-to-r to-red-400 from-rose-600 text-white text-secondary-gray rounded-lg font-semibold transition duration-500 cursor-pointer hover:to-red-500 hover:from-rose-700"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="px-6 py-3 bg-linear-to-r from-blue-600 to-cyan-500 text-white rounded-lg font-semibold shadow-lg transition duration-500 hover:shadow-xl cursor-pointer transform hover:from-blue-700 hover:to-cyan-600"
+        >
+          Create Project
+        </button>
+      </div>
+    </form>
+
+    <!-- Additional Info -->
+    <div class="text-center text-secondary-gray/60 text-sm">
+      <p>
+        Your project will be visible to trusted partners. All payments are secured through smart
+        contracts.
+      </p>
+    </div>
+  </div>
+  }
 </section>

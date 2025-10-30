@@ -5,7 +5,7 @@ import {
   HederaJsonRpcMethod,
   HederaSessionEvent,
 } from '@hashgraph/hedera-wallet-connect';
-import { LedgerId } from '@hashgraph/sdk';
+import { AccountId, LedgerId } from '@hashgraph/sdk';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -34,11 +34,6 @@ export class WalletService {
     try {
       await this.dAppConnector.init({ logger: 'error' });
       const modalResponse = await this.dAppConnector.openModal();
-
-      console.log(
-        'Modal response:', modalResponse,
-        
-      );
       if (modalResponse.acknowledged) {
         this.topic.set(modalResponse.topic);
         this.isConnected.set(true);
@@ -49,6 +44,7 @@ export class WalletService {
       console.error('Wallet connect error:', err);
     }
   }
+
   async disconnect() {
     const isDisconnected = await this.dAppConnector.disconnect(this.topic());
     if (isDisconnected) {
@@ -57,5 +53,10 @@ export class WalletService {
       this.accountId.set('');
     }
     return isDisconnected;
+  }
+
+  getAccountAddress(accountId: string = this.accountId()) {
+    const account = AccountId.fromString(accountId);
+    return account.toEvmAddress();
   }
 }

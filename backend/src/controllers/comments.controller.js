@@ -18,7 +18,7 @@ exports.createComment = catchAsync(async (req, res) => {
     freelancerAddress,
   });
 
-  res.json({
+  res.status(201).json({
     message: "Your comment created successfully",
     data: comment,
   });

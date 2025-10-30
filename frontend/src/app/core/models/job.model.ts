@@ -15,6 +15,7 @@ export interface IJob {
   freelancerAddress: string;
   previewHash: string;
   finalHash: string;
+  jobPeriod: number;
   deliveryDeadline: number;
   approvalDeadline: number;
   status: EJobStatus;
@@ -58,6 +59,7 @@ export interface IJobInput {
   description: string;
   price: number;
   clientAddress: string;
+  jobPeriod: number;
 }
 
 export interface IDealInput {
