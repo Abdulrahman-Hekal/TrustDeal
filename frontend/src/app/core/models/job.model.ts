@@ -1,25 +1,49 @@
-export interface jobResponse {
-    title: string,
-    description: string,
+export enum EJobStatus {
+  pending = 'pending',
+  funded = 'funded',
+  deliverd = 'deliverd',
+  approved = 'approved',
+  refunded = 'refunded',
+}
 
-    price: number,
+export interface IJob {
+  _id: string;
+  title: string;
+  description: string;
+  price: number;
+  clientAddress: string;
+  freelancerAddress: string;
+  previewHash: string;
+  finalHash: string;
+  deliveryDeadline: number;
+  approvalDeadline: number;
+  status: EJobStatus;
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  isExpired: boolean;
+}
 
-    // Encrypted fields
-    clientAddress: string,
-    freelancerAddress: string,
+export interface IJobsResponse {
+  message: string;
+  data: IJob[];
+}
 
-    previewHash: string,
-    finalHash: string,
+export interface IJobResponse {
+  message: string;
+  data: IJob;
+}
 
+export interface IJobInput {
+  title: string;
+  description: string;
+  price: number;
+  clientAddress: string;
+}
 
-    deliveryDeadline: { type: Number, required: true },
-    approvalDeadline: { type: Number, required: true },
-
-    status: {
-        type: String,
-        enum: ["pending", "funded", "deliverd", "approved", "refunded"],
-        default: "pending",
-    },
-
-    isDeleted: boolean,
+export interface IDealInput {
+  approvalDeadline: number;
+  deliveryDeadline: number;
+  freelancerAddress: string;
 }

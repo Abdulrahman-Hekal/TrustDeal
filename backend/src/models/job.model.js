@@ -58,27 +58,20 @@ const jobSchema = new mongoose.Schema(
     clientAddress: {
       type: String,
       required: true,
-      set: encrypt,
-      get: decrypt,
     },
     freelancerAddress: {
       type: String,
-      required: true,
       default: "",
-      set: encrypt,
-      get: decrypt,
     },
 
     previewHash: {
       type: String, // IPFS CID of the preview
-      required: true,
       default: "",
       set: encrypt,
       get: decrypt,
     },
     finalHash: {
       type: String, // IPFS CID of the final deliverable
-      required: true,
       default: "",
       set: encrypt,
       get: decrypt,
@@ -87,42 +80,37 @@ const jobSchema = new mongoose.Schema(
     // Encryption metadata (encrypted for safety)
     encryptedFilePath: {
       type: String,
-      required: true,
       default: "",
       set: encrypt,
       get: decrypt,
     },
     key: {
       type: String,
-      required: true,
       default: "",
       set: encrypt,
       get: decrypt,
     },
     iv: {
       type: String,
-      required: true,
       default: "",
       set: encrypt,
       get: decrypt,
     },
     authTag: {
       type: String,
-      required: true,
       default: "",
       set: encrypt,
       get: decrypt,
     },
     mimetype: {
       type: String,
-      required: true,
       default: "",
       set: encrypt,
       get: decrypt,
     },
 
-    deliveryDeadline: { type: Number, required: true },
-    approvalDeadline: { type: Number, required: true },
+    deliveryDeadline: { type: Number, default: Date.now() + 30 * 24 * 60 * 60 },
+    approvalDeadline: { type: Number, default: Date.now() + 37 * 24 * 60 * 60 },
 
     status: {
       type: String,

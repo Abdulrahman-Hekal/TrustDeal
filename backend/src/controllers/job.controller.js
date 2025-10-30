@@ -17,7 +17,9 @@ const fs = require("node:fs");
 // GET ALL JOBS
 // -------------------
 exports.getJobs = catchAsync(async (req, res) => {
-  const jobs = await Job.find({ isDeleted: false });
+  const jobs = await Job.find({ isDeleted: false }).select(
+    "-encryptedFilePath -key -iv -authTag -mimetype"
+  );
 
   res.json({
     message: "Get Jobs",
@@ -32,7 +34,7 @@ exports.getJobsByUser = catchAsync(async (req, res) => {
   const { address } = req.params;
   const jobs = await Job.find({
     $or: [{ clientAddress: address }, { freelancerAddress: address }],
-  });
+  }).select("-encryptedFilePath -key -iv -authTag -mimetype");
 
   res.json({
     message: "Get User Jobs",
@@ -47,7 +49,9 @@ exports.getJobById = catchAsync(async (req, res) => {
   const { id } = req.params;
   if (!Types.ObjectId.isValid(id)) throw new AppError("Invalid job ID", 400);
 
-  const job = await Job.findById(id);
+  const job = await Job.findById(id).select(
+    "-encryptedFilePath -key -iv -authTag -mimetype"
+  );
   if (!job) throw new AppError("Job not found", 404);
 
   res.json({

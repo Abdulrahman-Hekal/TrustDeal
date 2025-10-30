@@ -2,24 +2,11 @@
 @import 'tailwindcss';
 
 :root {
-    --primary-blue: #2563EB;
-    --accent-blue: #38BDF8;
-    --secondary-gray: #1E293B;
-    --background-light: #F8FAFC;
-    --success-green: #10B981;
-    --error-red: #EF4444;
-
-    /* التدرج المقترح */
-    --ui-gradient: linear-gradient(90deg, #2563EB 0%, #38BDF8 100%);
-
-      /* معاني الألوان (كتعليقات للتوثيق) */
-  /* 
-  --primary-blue: #2563EB - يمثل الموثوقية والثقة (أساسي للعلامة التجارية)
-  --accent-blue: #38BDF8 - يضيف الحيوية للأزرار أو النقاط البارزة
-  --secondary-gray: #1E293B - لون خلفية محايد وعصري
-  --background-light: #F8FAFC - يحافظ على واجهة المستخدم نظيفة وقابلة للقراءة
-  --success-green: #10B981 - لإجراءات الموافقة والإكمال
-  --error-red: #EF4444 - للصفقات الفاشلة أو المرفوضة
-  --ui-gradient: linear-gradient(90deg, #2563EB 0%, #38BDF8 100%) - للتدرج في الأزرار وأقسام الهيرو
-  */
+  --primary-blue: #2563eb;
+  --accent-blue: #38bdf8;
+  --secondary-gray: #1e293b;
+  --background-light: #f8fafc;
+  --success-green: #10b981;
+  --error-red: #ef4444;
+  --ui-gradient: linear-gradient(90deg, #2563eb 0%, #38bdf8 100%);
 }

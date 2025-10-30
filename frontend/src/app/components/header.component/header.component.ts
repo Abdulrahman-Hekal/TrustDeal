@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { WalletService } from '../../../core/services/wallet-service/wallet.service';
+import { WalletService } from '../../core/services/wallet-service/wallet.service';
 
 @Component({
   selector: 'app-header-component',
@@ -10,7 +10,7 @@ import { WalletService } from '../../../core/services/wallet-service/wallet.serv
 export class HeaderComponent implements OnInit {
   accountId = signal('');
   isConnected = signal(false);
-  isToggle : boolean = false
+  isToggle: boolean = false;
   private readonly _walletService = inject(WalletService);
 
   ngOnInit() {
@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit {
     this._walletService.disconnect();
   }
 
-  openNav(){
-    this.isToggle = !this.isToggle
+  openNav() {
+    this.isToggle = !this.isToggle;
   }
 }
