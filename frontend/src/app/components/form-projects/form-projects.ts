@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -9,8 +9,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './form-projects.css',
 })
 export class FormProjects {
-
-  from = false
+  from = false;
 
   projectForm: FormGroup = new FormGroup({
     title: new FormControl(''),
@@ -20,7 +19,7 @@ export class FormProjects {
   });
 
   closeForm() {
-    this.from = false
+    this.from = false;
   }
 
   // onSubmit() {
