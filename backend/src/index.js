@@ -15,7 +15,7 @@ app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 // API routes
-app.use("/api/work", require("./routes/work.route"));
+app.use("/api/jobs", require("./routes/job.route"));
 
 // Handle errors
 app.use((req, res, next) => {
