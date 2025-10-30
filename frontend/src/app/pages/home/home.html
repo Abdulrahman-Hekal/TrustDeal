@@ -1,5 +1,5 @@
 <section
-    class="relative bg-[url(/Gemini_Generated_Image_qs6iuuqs6iuuqs6i.png)] bg-cover bg-center bg-no-repeat w-full h-screen">
+    class="relative bg-[url(/home-bg.png)] bg-cover bg-center bg-no-repeat w-full home-bg">
     <!-- Overlay for better text readability -->
     <div class="absolute inset-0 bg-linear-to-r from-secondary-gray/80 to-primary-blue/50"></div>
 
@@ -18,6 +18,7 @@
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4 md:gap-6">
+                <app-form-projects />
 
                 <!-- Projects Button -->
                 <button
@@ -31,19 +32,7 @@
                         View Projects
                     </span>
                 </button>
-
-                <app-form-projects />
             </div>
-        </div>
-    </div>
-
-    <!-- Scroll Indicator -->
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
-        <div class="animate-bounce">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-background-light" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
         </div>
     </div>
 </section>
