@@ -8,7 +8,7 @@
 
         <!-- Desktop Navigation -->
         <ul class="hidden lg:flex lg:flex-row lg:items-center lg:gap-6">
-            <li>
+            <li class="text-white text-xl font-bold hover:text-[#38bdf8] transition duration-500">
                 <a routerLink="jobs">jobs</a>
             </li>
             <li class="flex items-center gap-4">
@@ -35,8 +35,8 @@
         @if (!isToggle) {
         <button class="lg:hidden text-background-light p-2 rounded-lg hover:bg-white/10 transition-colors duration-200"
             (click)="openNav()">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 cursor-pointer text-white" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 cursor-pointer text-white" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
         </button>
@@ -48,8 +48,8 @@
                 <div class="flex justify-between items-center p-6 border-b border-white/10">
                     <img src="./logo.png" alt="logo-trustDeal" class="w-[120px]">
                     <button (click)="openNav()" class="text-background-light p-2 rounded-lg hover:bg-white/10">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white cursor-pointer" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white cursor-pointer" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -58,6 +58,9 @@
 
                 <ul class="flex flex-col items-center gap-6 py-8 px-6">
                     @if(isConnected()) {
+                    <li class="text-white text-xl font-bold hover:text-[#38bdf8] transition duration-500">
+                        <a routerLink="jobs">jobs</a>
+                    </li>
                     <div class="flex flex-col items-center gap-4 w-full">
                         <span
                             class="text-background-light text-center font-medium bg-primary-blue/20 px-4 py-2 rounded-full w-full">
@@ -69,6 +72,9 @@
                         </button>
                     </div>
                     } @else {
+                    <li class="text-white text-xl font-bold hover:text-[#38bdf8] transition duration-500">
+                        <a routerLink="jobs">jobs</a>
+                    </li>
                     <button (click)="connect(); openNav()"
                         class="cursor-pointer text-white text-base font-semibold px-6 py-3 bg-linear-to-r from-blue-600 to-cyan-400 rounded-lg w-full transition-all duration-300">
                         Connect Wallet

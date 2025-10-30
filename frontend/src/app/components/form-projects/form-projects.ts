@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { JobService } from '../../core/services/job-service/job.service';
-import { IJobInput } from '../../core/models/job.model';
 
 @Component({
   selector: 'app-form-projects',

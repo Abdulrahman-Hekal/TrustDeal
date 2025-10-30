@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormProjects } from "../../components/form-projects/form-projects";
+import { FormProjects } from '../../components/form-projects/form-projects';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +7,4 @@ import { FormProjects } from "../../components/form-projects/form-projects";
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
-export class Home {
-
-}
+export class Home {}
