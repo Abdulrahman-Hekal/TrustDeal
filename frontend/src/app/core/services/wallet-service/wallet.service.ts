@@ -18,7 +18,7 @@ export class WalletService {
     url: globalThis.location.origin, // Must match your domain
     icons: [`${globalThis.location.origin}/${environment.appIcon}`],
   };
-  private readonly dAppConnector = new DAppConnector(
+  readonly dAppConnector = new DAppConnector(
     this.metadata,
     LedgerId.TESTNET,
     environment.walletProjectId,
@@ -33,7 +33,7 @@ export class WalletService {
 
   async connect() {
     try {
-      await this.dAppConnector.init({ logger: 'error' });
+      await this.dAppConnector.init();
       const modalResponse = await this.dAppConnector.openModal();
       if (modalResponse.acknowledged) {
         this.topic.set(modalResponse.topic);
@@ -58,6 +58,14 @@ export class WalletService {
 
   getAccountAddress(accountId: string = this.accountId()) {
     const account = AccountId.fromString(accountId);
-    return account.toEvmAddress();
+    return `0x${account.toEvmAddress()}`;
+  }
+
+  getAccountIdFromAddress(address: string) {
+    return AccountId.fromEvmAddress(0, 0, address);
+  }
+
+  getAccountId() {
+    return AccountId.fromString(this.accountId());
   }
 }

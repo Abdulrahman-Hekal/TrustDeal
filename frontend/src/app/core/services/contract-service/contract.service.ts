@@ -1,8 +1,15 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { ethers } from 'ethers';
-import contractJson from '../../contract/TrustDealEscrow.json';
+import {
+  ContractExecuteTransaction,
+  ContractFunctionParameters,
+  ContractCallQuery,
+  Client,
+  Hbar,
+  AccountBalanceQuery,
+} from '@hashgraph/sdk';
 import { WalletService } from '../wallet-service/wallet.service';
 import { environment } from '../../../../environments/environment';
+import { transactionToBase64String } from '@hashgraph/hedera-wallet-connect';
 
 export interface ProjectEvent {
   name: string;
@@ -17,160 +24,152 @@ export interface ProjectEvent {
 })
 export class ContractService {
   private readonly _walletService = inject(WalletService);
-  private provider!: ethers.BrowserProvider;
-  private signer!: ethers.Signer;
-  private contract!: ethers.Contract;
-
-  private readonly contractAddress = environment.contractAddress;
-  private readonly contractABI = contractJson.abi;
+  private readonly contractId = environment.contractId;
+  private readonly client = Client.forTestnet();
 
   events = signal<ProjectEvent[]>([]);
 
-  async initContract(): Promise<void> {
-    if (!this._walletService.isConnected()) {
-      throw new Error('Wallet not connected. Please connect via WalletService.');
-    }
+  /********************** Smart Contract Methods **********************/
 
-    // Hedera WalletConnect injects `ethereum` compatible provider
-    const anyWindow = globalThis as any;
-    if (!anyWindow.ethereum) {
-      throw new Error('No EVM provider found. Ensure HashPack or Blade Wallet is open.');
-    }
-
-    this.provider = new ethers.BrowserProvider(anyWindow.ethereum);
-    this.signer = await this.provider.getSigner();
-    this.contract = new ethers.Contract(this.contractAddress, this.contractABI, this.signer);
-    this.listenToEvents();
-  }
-
-  /* Create a new escrow project */
   async createProjectHBAR(
     freelancer: string,
     approvalWindowSec: number,
     deliveryDeadlineSec: number,
     amountHBAR: string
   ) {
-    await this.ensureContract();
-    const value = ethers.parseEther(amountHBAR);
-    const tx = await this.contract['createProjectHBAR'](
-      freelancer,
-      approvalWindowSec,
-      deliveryDeadlineSec,
-      { value }
-    );
-    return await tx.wait();
-  }
-
-  /* Freelancer delivers work */
-  async deliverWork(projectId: number, previewHash: string) {
-    await this.ensureContract();
-    const tx = await this.contract['deliverWork'](projectId, previewHash);
-    return await tx.wait();
-  }
-
-  /* Client approves delivered work */
-  async approveWork(projectId: number) {
-    await this.ensureContract();
-    const tx = await this.contract['approveWork'](projectId);
-    return await tx.wait();
-  }
-
-  /* Client requests refund */
-  async requestRefund(projectId: number) {
-    await this.ensureContract();
-    const tx = await this.contract['requestRefund'](projectId);
-    return await tx.wait();
-  }
-
-  /* Freelancer withdraws payout */
-  async withdraw(projectId: number) {
-    await this.ensureContract();
-    const tx = await this.contract['withdraw'](projectId);
-    return await tx.wait();
-  }
-
-  /* Auto refund if freelancer missed deadline */
-  async autoRefundIfLate(projectId: number) {
-    await this.ensureContract();
-    const tx = await this.contract['autoRefundIfLate'](projectId);
-    return await tx.wait();
-  }
-
-  /* Auto approve if client didn’t respond */
-  async autoApproveIfClientSilent(projectId: number) {
-    await this.ensureContract();
-    const tx = await this.contract['autoApproveIfClientSilent'](projectId);
-    return await tx.wait();
-  }
-
-  /* Read project info */
-  async getProject(projectId: number) {
-    await this.ensureContract();
-    return await this.contract['getProject'](projectId);
-  }
-
-  /* Get balance */
-  async getBalance(): Promise<string> {
-    await this.ensureContract();
-    const address = await this.signer.getAddress();
-    const balance = await this.provider.getBalance(address);
-    return ethers.formatEther(balance);
-  }
-
-  /************* Helpers *************/
-
-  /** 🧩 Ensure contract is initialized */
-  private async ensureContract(): Promise<void> {
-    if (!this.contract) {
-      await this.initContract();
-    }
-  }
-
-  private listenToEvents() {
-    if (!this.contract) return;
-
-    const addEvent = (name: string, projectId: number, data?: any, txHash?: string) => {
-      const event: ProjectEvent = {
-        name,
-        projectId,
-        data,
-        txHash,
-        timestamp: Date.now(),
-      };
-      this.events.update((prev) => [event, ...prev]); // prepend new event
-    };
-
-    this.contract.on('ProjectCreated', (projectId, client, freelancer, amount, event) => {
-      addEvent(
-        'ProjectCreated',
-        Number(projectId),
-        { client, freelancer, amount },
-        event.log.transactionHash
+    const tx = new ContractExecuteTransaction()
+      .setContractId(this.contractId)
+      .setGas(100_000)
+      .setPayableAmount(new Hbar(Number(amountHBAR)))
+      .setFunction(
+        'createProjectHBAR',
+        new ContractFunctionParameters()
+          .addAddress(freelancer)
+          .addUint256(approvalWindowSec)
+          .addUint256(deliveryDeadlineSec)
       );
-    });
 
-    this.contract.on('WorkDelivered', (projectId, previewHash, event) => {
-      addEvent('WorkDelivered', Number(projectId), { previewHash }, event.log.transactionHash);
+    return await this.signAndExecute(tx, 'ProjectCreated', {
+      freelancer,
+      amountHBAR,
     });
+  }
 
-    this.contract.on('WorkApproved', (projectId, event) => {
-      addEvent('WorkApproved', Number(projectId), {}, event.log.transactionHash);
-    });
+  async deliverWork(projectId: number, previewHash: string) {
+    return this.signAndExecute(
+      new ContractExecuteTransaction()
+        .setContractId(this.contractId)
+        .setGas(100_000)
+        .setFunction(
+          'deliverWork',
+          new ContractFunctionParameters().addUint256(projectId).addString(previewHash)
+        ),
+      'WorkDelivered'
+    );
+  }
 
-    this.contract.on('RefundIssued', (projectId, event) => {
-      addEvent('RefundIssued', Number(projectId), {}, event.log.transactionHash);
-    });
+  async approveWork(projectId: number) {
+    return this.signAndExecute(
+      new ContractExecuteTransaction()
+        .setContractId(this.contractId)
+        .setGas(100_000)
+        .setFunction('approveWork', new ContractFunctionParameters().addUint256(projectId)),
+      'WorkApproved'
+    );
+  }
 
-    this.contract.on('Withdrawn', (projectId, to, amount, event) => {
-      addEvent('Withdrawn', Number(projectId), { to, amount }, event.log.transactionHash);
-    });
+  async requestRefund(projectId: number) {
+    return this.signAndExecute(
+      new ContractExecuteTransaction()
+        .setContractId(this.contractId)
+        .setGas(100_000)
+        .setFunction('requestRefund', new ContractFunctionParameters().addUint256(projectId)),
+      'RefundIssued'
+    );
+  }
 
-    this.contract.on('AutoRefunded', (projectId, event) => {
-      addEvent('AutoRefunded', Number(projectId), {}, event.log.transactionHash);
-    });
+  async withdraw(projectId: number) {
+    return this.signAndExecute(
+      new ContractExecuteTransaction()
+        .setContractId(this.contractId)
+        .setGas(100_000)
+        .setFunction('withdraw', new ContractFunctionParameters().addUint256(projectId)),
+      'Withdrawn'
+    );
+  }
 
-    this.contract.on('AutoApproved', (projectId, event) => {
-      addEvent('AutoApproved', Number(projectId), {}, event.log.transactionHash);
-    });
+  async autoRefundIfLate(projectId: number) {
+    return this.signAndExecute(
+      new ContractExecuteTransaction()
+        .setContractId(this.contractId)
+        .setGas(100_000)
+        .setFunction('autoRefundIfLate', new ContractFunctionParameters().addUint256(projectId)),
+      'AutoRefunded'
+    );
+  }
+
+  async autoApproveIfClientSilent(projectId: number) {
+    return this.signAndExecute(
+      new ContractExecuteTransaction()
+        .setContractId(this.contractId)
+        .setGas(100_000)
+        .setFunction(
+          'autoApproveIfClientSilent',
+          new ContractFunctionParameters().addUint256(projectId)
+        ),
+      'AutoApproved'
+    );
+  }
+
+  async getProject(projectId: number) {
+    const query = new ContractCallQuery()
+      .setContractId(this.contractId)
+      .setGas(50_000)
+      .setFunction('getProject', new ContractFunctionParameters().addUint256(projectId));
+
+    const result = await query.execute(this.client);
+    return result;
+  }
+
+  async getBalance(): Promise<string> {
+    const accountBalanceQuery = new AccountBalanceQuery().setAccountId(
+      this._walletService.accountId()
+    );
+    const accountBalance = await accountBalanceQuery.execute(this.client);
+    return accountBalance.hbars.toString();
+  }
+
+  /********************** Helpers **********************/
+
+  /** ✅ Unified execute handler */
+  private async signAndExecute(
+    tx: ContractExecuteTransaction,
+    eventName: string,
+    data?: any
+  ): Promise<string> {
+    // ✅ Ask wallet to sign and execute
+    const params = {
+      signerAccountId: this._walletService.accountId(),
+      transactionList: transactionToBase64String(tx),
+    };
+    const response = await this._walletService.dAppConnector.signAndExecuteTransaction(params);
+
+    // Extract transaction ID
+    const txId = response.result.transactionId;
+    this.addEvent(eventName, 0, data, txId);
+
+    console.log(`${eventName} executed: https://hashscan.io/testnet/transaction/${txId}`);
+    return txId;
+  }
+
+  private addEvent(name: string, projectId: number, data?: any, txHash?: string) {
+    const event: ProjectEvent = {
+      name,
+      projectId,
+      data,
+      txHash,
+      timestamp: Date.now(),
+    };
+    this.events.update((prev) => [event, ...prev]);
   }
 }

@@ -56,6 +56,7 @@
         <!-- Buttons Container -->
         <div class="flex gap-3 mt-4">
           <button
+            (click)="deleteJob(job._id)"
             class="flex-1 bg-linear-to-r cursor-pointer from-[#EF4444] to-[#F87171] text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95"
           >
             Delete

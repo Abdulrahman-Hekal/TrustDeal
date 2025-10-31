@@ -102,12 +102,13 @@
         <div class="flex space-x-4">
           <input
             type="text"
-            formControlName="comment"
+            [(ngModel)]="newComment"
             placeholder="Write your comment..."
             class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent"
           />
           <button
-            class="px-6 py-3 bg-linear-to-r from-[#2563EB] to-[#38BDF8] text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+            (click)="addComment()"
+            class="px-6 py-3 bg-linear-to-r cursor-pointer from-[#2563EB] to-[#38BDF8] text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
           >
             Post
           </button>

@@ -8,4 +8,5 @@ export const environment = {
   staticUrl: 'http://localhost:3000/uploads/',
   ipfsGateway: 'amber-impressive-galliform-239.mypinata.cloud',
   contractAddress: '0x00000000000000000000000000000000006d358b',
+  contractId: '0.0.7157131',
 };

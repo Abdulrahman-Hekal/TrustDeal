@@ -3,7 +3,6 @@ import { JobService } from '../../core/services/job-service/job.service';
 import { Router } from '@angular/router';
 import { IJob } from '../../core/models/job.model';
 import { WalletService } from '../../core/services/wallet-service/wallet.service';
-import { ContractService } from '../../core/services/contract-service/contract.service';
 
 @Component({
   selector: 'app-user-projects',
@@ -14,30 +13,32 @@ import { ContractService } from '../../core/services/contract-service/contract.s
 export class UserProjects implements OnInit {
   private readonly _jobService = inject(JobService);
   private readonly _walletService = inject(WalletService);
-  private readonly _contractService = inject(ContractService);
   private readonly _router = inject(Router);
 
   jobs = signal<IJob[]>([]);
 
   ngOnInit() {
-    this.initializeWallet();
-  }
-
-  private async initializeWallet() {
-    if (!this._walletService.isConnected()) {
-      await this._walletService.connect();
-      await this._contractService.initContract();
-      location.reload();
+    if (this._walletService.isConnected()) {
+      this._jobService.getUserJobs(this._walletService.getAccountAddress()).subscribe({
+        next: (res) => {
+          this.jobs.set(res.data);
+        },
+        error: (res) => alert(res.error.message),
+      });
+    } else {
+      this._router.navigate(['/home']);
+      alert('Connect first to see your jobs');
     }
-    this._jobService.getUserJobs(this._walletService.getAccountAddress()).subscribe({
-      next: (res) => {
-        this.jobs.set(res.data);
-      },
-      error: (res) => alert(res.error.message),
-    });
   }
 
   showDetails(id: string) {
     this._router.navigate([`job/${id}`]);
+  }
+
+  deleteJob(id: string) {
+    this._jobService.deleteJob(id).subscribe({
+      next: (res) => alert(res.message),
+      error: (res) => alert(res.error.message),
+    });
   }
 }
