@@ -27,6 +27,7 @@ export class WalletService {
     [HederaChainId.Mainnet, HederaChainId.Testnet]
   );
   private readonly topic = signal('');
+
   accountId = signal('');
   isConnected = signal(false);
 

@@ -27,6 +27,6 @@ export class Jobs implements OnInit {
   }
 
   showDetails(id : string){
-    this._router.navigate([`job/${id}`])
+    this._router.navigate([`/job/${id}`])
   }
 }

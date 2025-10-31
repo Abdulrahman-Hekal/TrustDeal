@@ -11,10 +11,13 @@
       </div>
       <ul class="hidden lg:flex lg:flex-row lg:items-center lg:gap-6">
         <li class="text-white text-xl font-bold hover:text-[#38bdf8] transition duration-500">
-          <a routerLink="home" routerLinkActive="text-[#38bdf8]">Home</a>
+          <a routerLink="/home" routerLinkActive="text-[#38bdf8] border-b">Home</a>
         </li>
         <li class="text-white text-xl font-bold hover:text-[#38bdf8] transition duration-500">
-          <a routerLink="jobs" routerLinkActive="text-[#38bdf8]">jobs</a>
+          <a routerLink="/jobs" routerLinkActive="text-[#38bdf8] border-b">Jobs</a>
+        </li>
+        <li class="text-white text-xl font-bold hover:text-[#38bdf8] transition duration-500">
+          <a routerLink="/my-jobs" routerLinkActive="text-[#38bdf8] border-b">My Jobs</a>
         </li>
       </ul>
     </div>
@@ -39,7 +42,7 @@
         } @else {
         <button
           (click)="connect()"
-          class="cursor-pointer text-white text-base font-semibold px-6 py-2 bg-linear-to-r from-blue-600 to-cyan-400 rounded-lg transition-all duration-300  hover:shadow-lg hover:scale-105 active:scale-95"
+          class="cursor-pointer text-white text-base font-semibold px-6 py-2 bg-linear-to-r from-blue-600 to-cyan-400 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95"
         >
           Connect Wallet
         </button>
@@ -103,10 +106,13 @@
 
         <ul class="flex flex-col items-center gap-6 py-8 px-6">
           <li class="text-white text-xl font-bold hover:text-[#38bdf8] transition duration-500">
-            <a routerLink="home" routerLinkActive="text-[#38bdf8]">Home</a>
+            <a routerLink="/home" routerLinkActive="text-[#38bdf8] border-b">Home</a>
           </li>
           <li class="text-white text-xl font-bold hover:text-[#38bdf8] transition duration-500">
-            <a routerLink="jobs" routerLinkActive="text-[#38bdf8]">jobs</a>
+            <a routerLink="/jobs" routerLinkActive="text-[#38bdf8] border-b">jobs</a>
+          </li>
+          <li class="text-white text-xl font-bold hover:text-[#38bdf8] transition duration-500">
+            <a routerLink="/my-jobs" routerLinkActive="text-[#38bdf8] border-b">My Jobs</a>
           </li>
           @if(isConnected()) {
           <div class="flex flex-col items-center gap-4 w-full">
