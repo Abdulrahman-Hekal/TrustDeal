@@ -34,6 +34,7 @@ exports.getJobsByUser = catchAsync(async (req, res) => {
   const { address } = req.params;
   const jobs = await Job.find({
     $or: [{ clientAddress: address }, { freelancerAddress: address }],
+    isDeleted: false,
   }).select("-encryptedFilePath -key -iv -authTag -mimetype");
 
   res.json({
@@ -52,7 +53,7 @@ exports.getJobById = catchAsync(async (req, res) => {
   const job = await Job.findById(id).select(
     "-encryptedFilePath -key -iv -authTag -mimetype"
   );
-  if (!job) throw new AppError("Job not found", 404);
+  if (!job || job.isDeleted) throw new AppError("Job not found", 404);
 
   res.json({
     message: "Get Job",
@@ -64,9 +65,23 @@ exports.getJobById = catchAsync(async (req, res) => {
 // CREATE NEW JOB
 // -------------------
 exports.createJob = catchAsync(async (req, res) => {
-  const { title, description, price, clientAddress, jobPeriod } = req.body;
+  const {
+    title,
+    description,
+    price,
+    clientAddress,
+    jobPeriod,
+    approvalPeriod,
+  } = req.body;
 
-  if (!title || !description || !price || !clientAddress || !jobPeriod) {
+  if (
+    !title ||
+    !description ||
+    !price ||
+    !clientAddress ||
+    !jobPeriod ||
+    !approvalPeriod
+  ) {
     throw new AppError("Missing required fields", 400);
   }
 
@@ -76,6 +91,7 @@ exports.createJob = catchAsync(async (req, res) => {
     price,
     clientAddress,
     jobPeriod,
+    approvalPeriod,
   });
 
   res.status(201).json({
@@ -88,17 +104,18 @@ exports.createJob = catchAsync(async (req, res) => {
 // ASSIGN FREELANCER
 // -------------------
 exports.assignFreelancer = catchAsync(async (req, res) => {
-  const { freelancerAddress, deliveryDeadline, approvalDeadline } = req.body;
+  const { freelancerAddress, projectId } = req.body;
 
-  if (!freelancerAddress) {
+  if (!freelancerAddress || !projectId) {
     throw new AppError("Missing required fields", 400);
   }
 
-  const job = await Job.findByIdAndUpdate(
-    req.params,
-    { freelancerAddress, deliveryDeadline, approvalDeadline },
-    { new: true }
-  );
+  let job = await Job.findById(req.params.id);
+  job.freelancerAddress = freelancerAddress;
+  job.projectId = projectId;
+  job.deliveryDeadline = Date.now() + job.jobPeriod * 24 * 60 * 60;
+
+  await job.save();
 
   res.status(201).json({
     message: "Freelancer assigned to your job successfully",
@@ -120,7 +137,7 @@ exports.deliver = catchAsync(async (req, res) => {
 
   const upload = await pinata.upload.private.file(file);
 
-  await Job.findByIdAndUpdate(
+  let job = await Job.findByIdAndUpdate(
     jobId,
     {
       encryptedFilePath: encryptedFile.outputPath,
@@ -128,9 +145,13 @@ exports.deliver = catchAsync(async (req, res) => {
       iv: encryptedFile.iv,
       authTag: encryptedFile.authTag,
       mimetype: upload.mime_type,
+      previewHash: "jndkgjn",
     },
     { new: true }
   );
+  job.approvalDeadline = Date.now() + job.approvalPeriod * 24 * 60 * 60;
+
+  await job.save();
 
   res.json({
     message: "Your work uploaded successfully",
@@ -207,10 +228,6 @@ exports.approveWork = catchAsync(async (req, res) => {
   // Only client can release
   if (job.clientAddress !== clientAddress)
     throw new AppError("Unauthorized", 403);
-
-  // Check job status
-  if (job.status !== "delivered")
-    throw new AppError("Job is not yet delivered for approval", 400);
 
   // 🔹 2. Update job status
   job.status = "approved";
@@ -289,13 +306,15 @@ exports.updateJobStatus = catchAsync(async (req, res) => {
 exports.deleteJob = catchAsync(async (req, res) => {
   const { id } = req.params;
 
-  const job = await Job.findByIdAndUpdate(
-    id,
-    { isDeleted: true },
-    { new: true }
-  );
+  const job = await Job.findById(id);
+  if (job.status === "deliverd" || job.status === "funded")
+    throw new AppError("You can not delete in proccess jobs");
 
   if (!job) throw new AppError("Job not found", 404);
+
+  job.isDeleted = true;
+
+  await job.save();
 
   res.json({ message: "Job deleted successfully" });
 });

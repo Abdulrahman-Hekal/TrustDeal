@@ -34,23 +34,23 @@ export class JobService {
     return this._httpClient.post<IJobResponse>(`${this.baseUrl}`, jobData);
   }
 
-  makeDeal(jobId: string, dealData: IDealInput) {
-    return this._httpClient.put<IJobResponse>(`${this.baseUrl}/${jobId}`, dealData);
+  makeDeal(jobId: string, data: IDealInput) {
+    return this._httpClient.put<IJobResponse>(`${this.baseUrl}/${jobId}`, data);
   }
 
   deliverJob(jobId: string, fileFormData: FormData) {
     return this._httpClient.post<IipfsResponse>(`${this.baseUrl}/deliver/${jobId}`, fileFormData);
   }
 
-  generatePreview(jobId: string, userAddress: string) {
+  generatePreview(jobId: string, clientAddress: string) {
     return this._httpClient.post<IPreviewResponse>(`${this.baseUrl}/preview/${jobId}`, {
-      userAddress,
+      clientAddress,
     });
   }
 
-  approveWork(jobId: string, userAddress: string) {
+  approveWork(jobId: string, clientAddress: string) {
     return this._httpClient.post<IipfsResponse>(`${this.baseUrl}/approve/${jobId}`, {
-      userAddress,
+      clientAddress,
     });
   }
 

@@ -10,12 +10,14 @@ export interface IJob {
   _id: string;
   title: string;
   description: string;
+  projectId: number;
   price: number;
   clientAddress: string;
   freelancerAddress: string;
   previewHash: string;
   finalHash: string;
   jobPeriod: number;
+  approvalPeriod: number;
   deliveryDeadline: number;
   approvalDeadline: number;
   status: EJobStatus;
@@ -60,10 +62,10 @@ export interface IJobInput {
   price: number;
   clientAddress: string;
   jobPeriod: number;
+  approvalPeriod: number;
 }
 
 export interface IDealInput {
-  approvalDeadline: number;
-  deliveryDeadline: number;
+  projectId: number;
   freelancerAddress: string;
 }

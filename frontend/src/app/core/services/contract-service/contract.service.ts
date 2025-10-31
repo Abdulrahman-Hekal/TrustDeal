@@ -10,6 +10,8 @@ import {
 import { WalletService } from '../wallet-service/wallet.service';
 import { environment } from '../../../../environments/environment';
 import { transactionToBase64String } from '@hashgraph/hedera-wallet-connect';
+import { Interface } from 'ethers';
+import contract from '../../contract/TrustDealEscrow.json'
 
 export interface ProjectEvent {
   name: string;
@@ -31,6 +33,10 @@ export class ContractService {
 
   /********************** Smart Contract Methods **********************/
 
+  sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   async createProjectHBAR(
     freelancer: string,
     approvalWindowSec: number,
@@ -39,7 +45,7 @@ export class ContractService {
   ) {
     const tx = new ContractExecuteTransaction()
       .setContractId(this.contractId)
-      .setGas(100_000)
+      .setGas(900_000)
       .setPayableAmount(new Hbar(Number(amountHBAR)))
       .setFunction(
         'createProjectHBAR',
@@ -49,10 +55,16 @@ export class ContractService {
           .addUint256(deliveryDeadlineSec)
       );
 
-    return await this.signAndExecute(tx, 'ProjectCreated', {
+    const txId = await this.signAndExecute(tx, 'ProjectCreated', {
       freelancer,
       amountHBAR,
     });
+
+    console.log('txId2: ', txId);
+
+    await this.sleep(8000);
+
+    return await this.getProjectIdFromEvent(txId);
   }
 
   async deliverWork(projectId: number, previewHash: string) {
@@ -146,20 +158,17 @@ export class ContractService {
     tx: ContractExecuteTransaction,
     eventName: string,
     data?: any
-  ): Promise<string> {
+  ): Promise<any> {
     // ✅ Ask wallet to sign and execute
     const params = {
       signerAccountId: this._walletService.accountId(),
       transactionList: transactionToBase64String(tx),
     };
-    const response = await this._walletService.dAppConnector.signAndExecuteTransaction(params);
+    const res = (await this._walletService.dAppConnector.signAndExecuteTransaction(params)) as any;
 
-    // Extract transaction ID
-    const txId = response.result.transactionId;
-    this.addEvent(eventName, 0, data, txId);
-
-    console.log(`${eventName} executed: https://hashscan.io/testnet/transaction/${txId}`);
-    return txId;
+    // // Extract transaction ID
+    console.log('txId: ', res.transactionId);
+    return res.transactionId;
   }
 
   private addEvent(name: string, projectId: number, data?: any, txHash?: string) {
@@ -171,5 +180,59 @@ export class ContractService {
       timestamp: Date.now(),
     };
     this.events.update((prev) => [event, ...prev]);
+  }
+
+  async getProjectIdFromEvent(txId: string): Promise<number | null> {
+    const arr = txId.split('@');
+    const newTxId = arr[0] + '-' + arr[1].replace('.', '-');
+    console.log(newTxId);
+    const url = `https://testnet.mirrornode.hedera.com/api/v1/contracts/results/${newTxId}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    // Check the logs for "ProjectCreated"
+    console.log(data);
+    const logs = data.logs;
+    if (!logs || logs.length === 0) {
+        throw new Error("No logs found for this transaction.");
+    }
+
+    const iface = new Interface(contract.abi);
+    let projectId = null;
+    console.log(logs);
+
+    for (const log of logs) {
+        try {
+            // The log data from the mirror node needs to be formatted for ethers
+            const formattedLog = {
+                topics: log.topics.map((topic: any) => topic),
+                data: log.data
+            };
+
+            const parsedEvent = iface.parseLog(formattedLog);
+
+            console.log(parsedEvent)
+
+            // Check if the parsed event is the one we are looking for
+            if (parsedEvent?.name === "ProjectCreated") {
+                console.log("Found ProjectCreated event!");
+                // Extract the projectId from the event arguments
+                projectId = parsedEvent.args['projectId'];
+                break; // Exit the loop once the event is found
+            }
+        } catch (error) {
+            // This error is expected if a log doesn't match an event in our ABI
+            // We can safely ignore it and continue to the next log
+        }
+    }
+
+    if (projectId === null) {
+        throw new Error("ProjectCreated event not found in transaction logs.");
+    }
+
+    console.log("--- Project Creation Successful! ---");
+    console.log(`Retrieved Project ID from event: ${projectId.toString()}`);
+
+    return projectId.toString();
   }
 }

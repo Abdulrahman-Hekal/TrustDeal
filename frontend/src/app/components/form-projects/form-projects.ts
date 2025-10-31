@@ -20,6 +20,7 @@ export class FormProjects {
     description: new FormControl(''),
     price: new FormControl(''),
     jobPeriod: new FormControl(''),
+    approvalPeriod: new FormControl(''),
   });
 
   onSubmit() {

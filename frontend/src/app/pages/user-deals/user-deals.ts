@@ -5,36 +5,34 @@ import { Router } from '@angular/router';
 import { WalletService } from '../../core/services/wallet-service/wallet.service';
 
 @Component({
-  selector: 'app-jobs',
+  selector: 'app-user-deals',
   imports: [],
-  templateUrl: './jobs.html',
-  styleUrl: './jobs.css',
+  templateUrl: './user-deals.html',
+  styleUrl: './user-deals.css',
 })
-export class Jobs implements OnInit {
+export class UserDeals implements OnInit {
   private readonly _jobService = inject(JobService);
   private readonly _walletService = inject(WalletService);
   private readonly _router = inject(Router);
 
   jobs = signal<IJob[]>([]);
 
-  ngOnInit(): void {
-    this._jobService.getAllJobs().subscribe({
-      next: (res) => {
-        this.jobs.set(res.data);
-      },
-      error: (err) => console.log(err),
-    });
+  ngOnInit() {
+    if (this._walletService.isConnected()) {
+      this._jobService.getUserJobs(this._walletService.getAccountAddress()).subscribe({
+        next: (res) => {
+          this.jobs.set(res.data);
+        },
+        error: (res) => alert(res.error.message),
+      });
+    } else {
+      this._router.navigate(['/home']);
+      alert('Connect first to see your Deals');
+    }
   }
 
   showDetails(id: string) {
-    this._router.navigate([`/job/${id}`]);
-  }
-
-  deleteJob(id: string) {
-    this._jobService.deleteJob(id).subscribe({
-      next: (res) => alert(res.message),
-      error: (res) => alert(res.error.message),
-    });
+    this._router.navigate([`job/${id}`]);
   }
 
   compareAddresses(address: string) {
@@ -44,7 +42,10 @@ export class Jobs implements OnInit {
     return false;
   }
 
-  getAccountId(address: string) {
-    return this._walletService.getAccountIdFromAddress(address);
+  deleteJob(id: string) {
+    this._jobService.deleteJob(id).subscribe({
+      next: (res) => alert(res.message),
+      error: (res) => alert(res.error.message),
+    });
   }
 }
